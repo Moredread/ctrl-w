@@ -91,6 +91,12 @@ Main.k.setuptranslations = function() {
 		"Séparer les projets / recherches / pilgred sous la zone de jeu."
 	];
 	
+	//Sidebar
+	text.sidebarSync = 'Sync'
+	text.sidebarSyncTooltipTitle = "Synchroniser les données";
+	text.sidebarSyncTooltipText = "CTRL+W est synchronisable entre plusieurs machines. Cliquez ici pour configurer la fonctionnalité";
+	
+	
 	//Astropad
 	text.astroUpdated = 'Astropad synchronisé.';
 	
@@ -4365,6 +4371,10 @@ Main.k.tabs.playing = function() {
 
 		// Options Manager
 		Main.k.MakeButton("<img src='/img/icons/ui/pa_eng.png' style='vertical-align: -20%' /> Options", null, null, "Gérer les options", "Certaines fonctionnalitées de Ctrl+W sont configurables. Cliquez ici pour spécifier vos préférences.")
+        .appendTo(leftbar).find("a").on("mousedown", Main.k.Options.open);
+        
+        // Sync Manager
+		Main.k.MakeButton("<img src='/img/icons/ui/pa_eng.png' style='vertical-align: -20%' /> "+Main.k.text.sidebarSync, null, null, Main.k.text.sidebarSyncTooltipTitle, Main.k.text.sidebarSyncTooltipText)
 		.appendTo(leftbar).find("a").on("mousedown", Main.k.Options.open);
 
 		// Page reloader
