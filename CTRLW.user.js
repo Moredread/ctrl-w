@@ -4,12 +4,12 @@
 // @include     http://mush.vg/*
 // @include     http://mush.twinoid.com/*
 // @include     http://mush.twinoid.es/*
-// @downloadURL https://raw.github.com/badconker/ctrl-w/release/CTRLW.user.js
+// @downloadURL https://raw.github.com/badconker/ctrl-w/beta/CTRLW.user.js
 // @require     lib/Gettext.js
 // @resource    translation:fr translations/fr/LC_MESSAGES/ctrl-w.po
 // @resource    translation:en translations/en/LC_MESSAGES/ctrl-w.po
 // @resource    translation:es translations/es/LC_MESSAGES/ctrl-w.po
-// @version     0.33.3b2
+// @version     0.33.3b3
 // ==/UserScript==
 
 var Main = unsafeWindow.Main;
@@ -2239,7 +2239,7 @@ Main.k.tabs.playing = function() {
 			var version_update = Main.k.version
 		}
 		$.ajax({
-			url :Main.k.servurl + "/versions/update/"+ version_update,
+			url :Main.k.servurl + "/versions/update/"+ version_update+"/beta",
 			dataType : 'jsonp',
 			success: function(json) {
 				Main.k.UpdateData.currversion = json.numero;
