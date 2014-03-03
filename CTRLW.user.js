@@ -1326,7 +1326,17 @@ Main.k.css.bubbles = function() {
 		border: 1px solid #5457b0;" + custombubbles_glow + "\
 		padding: 3px 5px! important;\
 	}\
+	.bubble_derek {\
+		background: url(" + Main.k.servurl + "/img/tile_chao.png) center repeat #FFF! important;\
+		border: 1px solid #5457b0;" + custombubbles_glow + "\
+		padding: 3px 5px! important;\
+	}\
 	.bubble_finola {\
+		background: url(" + Main.k.servurl + "/img/tile_finola.png) center repeat #FFF! important;\
+		border: 1px solid #35adbc;" + custombubbles_glow + "\
+		padding: 3px 5px! important;\
+	}\
+	.bubble_andie {\
 		background: url(" + Main.k.servurl + "/img/tile_finola.png) center repeat #FFF! important;\
 		border: 1px solid #35adbc;" + custombubbles_glow + "\
 		padding: 3px 5px! important;\
@@ -1381,7 +1391,9 @@ Main.k.css.bubbles = function() {
 	.bubble_paola span.buddy, .colored_paola { color: #792b70! important; }\
 	.bubble_jin_su span.buddy, .colored_jin_su { color: #a41834! important; }\
 	.bubble_chao span.buddy, .colored_chao { color: #5457b0! important; }\
+	.bubble_derek span.buddy, .colored_derek { color: #5457b0! important; }\
 	.bubble_finola span.buddy, .colored_finola { color: #35adbc! important; }\
+	.bubble_andie span.buddy, .colored_andie { color: #35adbc! important; }\
 	.bubble_kuan_ti span.buddy, .colored_kuan_ti { color: #e89413! important; }\
 	.bubble_ian span.buddy, .colored_ian { color: #647c27! important; }\
 	.bubble_eleesha span.buddy, .colored_eleesha { color: #dca312! important; }\
@@ -4640,8 +4652,8 @@ Main.k.tabs.playing = function() {
 						var p = li.html().split(",");
 						for (var j=0; j<p.length; j++) {
 							var hero = p[j].trim();
-							var h = Main.k.h[hero];
 							var bubble = hero.replace(/(\s)/g, "_").toLowerCase();
+							var h = Main.k.h[bubble];
 
 							$("<img>").addClass("body " + bubble)
 							.attr("src", "/img/design/pixel.gif")
