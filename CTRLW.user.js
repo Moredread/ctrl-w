@@ -10,7 +10,7 @@
 // @resource    translation:fr https://raw.github.com/badconker/ctrl-w/beta/translations/fr/LC_MESSAGES/ctrl-w.po
 // @resource    translation:en https://raw.github.com/badconker/ctrl-w/beta/translations/en/LC_MESSAGES/ctrl-w.po
 // @resource    translation:es https://raw.github.com/badconker/ctrl-w/beta/translations/es/LC_MESSAGES/ctrl-w.po
-// @version     0.33.4b2
+// @version     0.33.4b3
 // ==/UserScript==
 
 var Main = unsafeWindow.Main;
@@ -60,6 +60,13 @@ String.prototype.capitalize = function() {
 		return a.toUpperCase();
 	});
 };
+String.prototype.replaceFromObj = function(obj) {
+  var retStr = this
+  for (var x in obj) {
+    retStr = retStr.replace(new RegExp(x, 'g'), obj[x])
+  }
+  return retStr
+}
 RegExp.escape = function(s) {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 };
@@ -505,7 +512,6 @@ Main.k.Game.init = function() {
 		return
 	};
 	Main.k.Game.data = JSON.parse(cook);
-	console.log(Main.k.Game.data);
 }
 Main.k.Game.save = function() {
 	js.Cookie.set("ctrlwgame",JSON.stringify(Main.k.Game.data),420000000);
@@ -514,6 +520,7 @@ Main.k.Game.updateDayAndCycle = function(day,cycle) {
 	if(day != this.data.day || cycle != this.data.cycle){
 		this.data.day = day;
 		this.data.cycle = cycle;
+		Main.k.onCycleChange();
 		this.updatePlayerInfos();
 		this.save();
 	}
@@ -2685,14 +2692,41 @@ Main.k.tabs.playing = function() {
 	}
 	Main.k.FormatPharma = function() {
 		var ret = "**//" + Main.k.text.gettext("Consommables :") + " //**";
-
+		
+		var o_replace = {};
+		/* Translators: This translation must be copied from the game. (Consummables description) */
+		o_replace[Main.k.text.gettext("Guérie la maladie")] = ':pa_heal:';
+		o_replace[Main.k.text.gettext("satiété")] = ':pa_cook:';
+		o_replace[Main.k.text.gettext("Provoque la maladie")] = ':ill:';
+		
+		var a_ignore = [];
+		/* Translators: This translation must be copied from the game. (Consummables description) */
+		a_ignore.push(Main.k.text.gettext("Impérissable"));
+		var regex_ignore = new RegExp('^('+a_ignore.join('|')+'$)');
+		
 		$("#room").find("li").not(".cdEmptySlot").each(function() {
 			var name = $(this).attr("data-name").capitalize();
 			var desc = $(this).attr("data-desc");
 
 			if (desc.indexOf("Effets") != -1 || $(this).data('id') == "CONSUMABLE") {
-				ret += "\n**" + name + "** : ";
-				ret += desc.substring(desc.indexOf("</em>")+5, desc.length);
+				var $desc = $(desc);
+				if($desc.has('p')){
+					
+					var a_ret_effect = [];
+					$desc.find('p').each(function(){
+						if(!regex_ignore.test($(this).html())){
+							a_ret_effect.push($(this).html().replaceFromObj(o_replace));
+						}
+					});
+					if(a_ret_effect.length > 0){
+						ret += "\n**" + name + "** : ";
+						ret += a_ret_effect.join(', ');
+					}
+					
+					
+				}
+				
+				
 			}
 		});
 
@@ -2702,6 +2736,7 @@ Main.k.tabs.playing = function() {
 		ret = ret.replace(/<img[^>]+pa_slot1[^>]+>/g, ":pa:");
 		ret = ret.replace(/<img[^>]+pa_slot2[^>]+>/g, ":pm:");
 		ret = ret.replace(/<img[^>]+moral[^>]+>/g, ":moral:");
+		ret = ret.replace(/<img[^>]+lp\.png[^>]+>/g, ":hp:");
 
 		return ret;
 	}
@@ -4596,6 +4631,12 @@ Main.k.tabs.playing = function() {
 		$(Main.k.window).resize(Main.k.Resize);
 		$("#chatBlock").on("resize", Main.k.Resize);
 	}
+	Main.k.onCycleChange = function(){
+		// Script updates
+		// ----------------------------------- //
+		Main.k.UpdateCheck();
+		// ----------------------------------- //
+	};
 	Main.k.MushUpdate = function() {
 		var leftbar = $(".usLeftbar");
 		Main.k.hasTalkie = $("#walltab").length > 0;
@@ -5153,12 +5194,6 @@ Main.k.tabs.playing = function() {
 				.on("mouseout", Main.hideTip);
 			}
 		}
-		// ----------------------------------- //
-
-
-		// Script updates
-		// ----------------------------------- //
-		Main.k.UpdateCheck();
 		// ----------------------------------- //
 
 		// Update manager?
