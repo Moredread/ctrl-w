@@ -10,7 +10,7 @@
 // @resource    translation:fr https://raw.github.com/badconker/ctrl-w/beta/translations/fr/LC_MESSAGES/ctrl-w.po
 // @resource    translation:en https://raw.github.com/badconker/ctrl-w/beta/translations/en/LC_MESSAGES/ctrl-w.po
 // @resource    translation:es https://raw.github.com/badconker/ctrl-w/beta/translations/es/LC_MESSAGES/ctrl-w.po
-// @version     0.33.4b3
+// @version     0.33.4b4
 // ==/UserScript==
 
 var Main = unsafeWindow.Main;
@@ -2696,7 +2696,9 @@ Main.k.tabs.playing = function() {
 		var o_replace = {};
 		/* Translators: This translation must be copied from the game. (Consummables description) */
 		o_replace[Main.k.text.gettext("Guérie la maladie")] = ':pa_heal:';
+		/* Translators: This translation must be copied from the game. (Consummables description) */
 		o_replace[Main.k.text.gettext("satiété")] = ':pa_cook:';
+		/* Translators: This translation must be copied from the game. (Consummables description) */
 		o_replace[Main.k.text.gettext("Provoque la maladie")] = ':ill:';
 		
 		var a_ignore = [];
